@@ -76,25 +76,42 @@ $stmt = $pdo->prepare("SELECT COUNT(*) as total_matches, SUM(points) as total_po
 $stmt->execute([$user_id]);
 $stats = $stmt->fetch();
 
-// Récupérer le classement de l'utilisateur
-$sqlRank = "
-    SELECT user_id, username, pseudo, SUM(points) as total_points,
-           RANK() OVER (ORDER BY SUM(points) DESC) as ranking
-    FROM scores s
-    JOIN users u ON s.user_id = u.id
-    GROUP BY user_id
-";
-$stmtRank = $pdo->query($sqlRank);
-$rankings = $stmtRank->fetchAll();
+// Si pas de stats, initialiser à 0
+if (!$stats || $stats['total_points'] === null) {
+    $stats = ['total_matches' => 0, 'total_points' => 0];
+}
 
-// Trouver la position de l'utilisateur actuel
-$userRank = null;
-$totalPlayers = count($rankings);
-foreach ($rankings as $rank) {
-    if ($rank['user_id'] == $user_id) {
-        $userRank = $rank;
-        break;
+// Récupérer le classement de l'utilisateur
+try {
+    // Récupérer tous les joueurs qui ont des scores
+    $sqlRank = "
+        SELECT s.user_id, u.username, COALESCE(u.pseudo, u.username) as pseudo, SUM(s.points) as total_points
+        FROM scores s
+        JOIN users u ON s.user_id = u.id
+        GROUP BY s.user_id, u.username, u.pseudo
+        ORDER BY total_points DESC
+    ";
+    $stmtRank = $pdo->query($sqlRank);
+    $rankings = $stmtRank->fetchAll();
+
+    // Trouver la position de l'utilisateur actuel
+    $userRank = null;
+    $totalPlayers = count($rankings);
+    $position = 1;
+    
+    foreach ($rankings as $rank) {
+        if ($rank['user_id'] == $user_id) {
+            $userRank = $rank;
+            $userRank['ranking'] = $position;
+            break;
+        }
+        $position++;
     }
+} catch (PDOException $e) {
+    // En cas d'erreur SQL, initialiser les variables
+    error_log("Erreur classement: " . $e->getMessage());
+    $userRank = null;
+    $totalPlayers = 0;
 }
 
 require_once '../templates/header.php';
