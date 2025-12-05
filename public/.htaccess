@@ -1,0 +1,19 @@
+RewriteEngine On
+RewriteBase /
+
+ErrorDocument 403 /public/register.php
+ErrorDocument 404 /404.php
+
+RewriteRule ^config/ - [F,L]
+
+RewriteRule ^templates/ - [F,L]
+
+RewriteRule ^sql/ - [F,L]
+
+Options -Indexes
+
+<FilesMatch "\.(env|ini|sql|bak|backup)$">
+    Require all denied
+</FilesMatch>
+
+AddDefaultCharset UTF-8
