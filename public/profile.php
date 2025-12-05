@@ -76,6 +76,27 @@ $stmt = $pdo->prepare("SELECT COUNT(*) as total_matches, SUM(points) as total_po
 $stmt->execute([$user_id]);
 $stats = $stmt->fetch();
 
+// Récupérer le classement de l'utilisateur
+$sqlRank = "
+    SELECT user_id, username, pseudo, SUM(points) as total_points,
+           RANK() OVER (ORDER BY SUM(points) DESC) as ranking
+    FROM scores s
+    JOIN users u ON s.user_id = u.id
+    GROUP BY user_id
+";
+$stmtRank = $pdo->query($sqlRank);
+$rankings = $stmtRank->fetchAll();
+
+// Trouver la position de l'utilisateur actuel
+$userRank = null;
+$totalPlayers = count($rankings);
+foreach ($rankings as $rank) {
+    if ($rank['user_id'] == $user_id) {
+        $userRank = $rank;
+        break;
+    }
+}
+
 require_once '../templates/header.php';
 require_once '../templates/profile_view.php';
 require_once '../templates/footer.php';

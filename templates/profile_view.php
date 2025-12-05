@@ -19,7 +19,7 @@
     <?php endif; ?>
 
     <div style="display: flex; gap: 25px; flex-wrap: wrap;">
-        <!-- Statistiques -->
+        <!-- Statistiques et Classement -->
         <div class="card" style="flex: 1; min-width: 300px;">
             <h3>📊 Mes Statistiques</h3>
             <div style="margin-top: 20px;">
@@ -31,10 +31,33 @@
                     <span style="font-size: 0.9rem;">🎮 Matchs Joués</span>
                     <strong style="font-size: 1.3rem;"><?= $stats['total_matches'] ?? 0 ?></strong>
                 </div>
-                <div style="display: flex; justify-content: space-between; padding: 15px; background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); border-radius: 10px; color: white;">
+                <div style="display: flex; justify-content: space-between; padding: 15px; background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); border-radius: 10px; color: white; margin-bottom: 15px;">
                     <span style="font-size: 0.9rem;">📅 Membre depuis</span>
                     <strong style="font-size: 1.1rem;"><?= date('d/m/Y', strtotime($user['created_at'])) ?></strong>
                 </div>
+                
+                <?php if ($userRank): ?>
+                <div style="display: flex; justify-content: space-between; padding: 15px; background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); border-radius: 10px; color: white; position: relative; overflow: hidden;">
+                    <?php if ($userRank['ranking'] == 1): ?>
+                        <div style="position: absolute; top: -10px; right: -10px; font-size: 4rem; opacity: 0.2;">👑</div>
+                    <?php endif; ?>
+                    <span style="font-size: 0.9rem;">📈 Classement</span>
+                    <strong style="font-size: 1.3rem; position: relative; z-index: 1;">
+                        #<?= $userRank['ranking'] ?> / <?= $totalPlayers ?>
+                        <?php if ($userRank['ranking'] == 1): ?>
+                            👑
+                        <?php elseif ($userRank['ranking'] == 2): ?>
+                            🥈
+                        <?php elseif ($userRank['ranking'] == 3): ?>
+                            🥉
+                        <?php endif; ?>
+                    </strong>
+                </div>
+                <?php else: ?>
+                <div style="display: flex; justify-content: center; align-items: center; padding: 15px; background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%); border-radius: 10px; color: white;">
+                    <span style="font-size: 0.9rem;">🎯 Jouez des matchs pour être classé !</span>
+                </div>
+                <?php endif; ?>
             </div>
         </div>
 

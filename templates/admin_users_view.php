@@ -20,6 +20,10 @@
         </div>
     <?php endif; ?>
 
+    <div class="info alert-info" style="margin-bottom: 25px;">
+        <strong>ℹ️ Panneau d'administration :</strong> Vous pouvez modifier les <strong>emails</strong>, <strong>pseudos</strong> et <strong>scores</strong> de tous les utilisateurs. Cliquez sur "✏️ Modifier" pour éditer un profil.
+    </div>
+
     <div class="card">
         <div style="margin-bottom: 20px;">
             <p style="color: #7f8c8d; font-size: 0.95rem;">
@@ -96,7 +100,10 @@
 <div id="editModal" class="modal" style="display:none;">
     <div class="modal-content">
         <span class="close" onclick="closeEditModal()" title="Fermer">&times;</span>
-        <h2 style="margin-bottom: 25px; color: #1e3c72;">✏️ Modifier l'utilisateur</h2>
+        <h2 style="margin-bottom: 10px; color: #1e3c72;">✏️ Modifier l'utilisateur</h2>
+        <p style="color: #7f8c8d; font-size: 0.9rem; margin-bottom: 25px;">
+            Vous pouvez modifier toutes les informations de l'utilisateur
+        </p>
         
         <form method="POST" id="editForm">
             <input type="hidden" name="action" value="update">
@@ -105,18 +112,24 @@
             <div class="form-group">
                 <label for="edit_email">📧 Adresse Email</label>
                 <input type="email" id="edit_email" name="email" required placeholder="exemple@email.com">
+                <small style="color: #7f8c8d; font-size: 0.85rem; display: block; margin-top: 5px;">
+                    ✏️ Modifiable par l'administrateur
+                </small>
             </div>
             
             <div class="form-group">
                 <label for="edit_pseudo">👤 Pseudo</label>
                 <input type="text" id="edit_pseudo" name="pseudo" required placeholder="Nom d'utilisateur" maxlength="50">
+                <small style="color: #7f8c8d; font-size: 0.85rem; display: block; margin-top: 5px;">
+                    ✏️ Modifiable par l'administrateur
+                </small>
             </div>
             
             <div class="form-group">
                 <label for="edit_score">🏆 Score Total</label>
                 <input type="number" id="edit_score" name="score" min="0" max="999999" required placeholder="0">
                 <small style="color: #7f8c8d; font-size: 0.85rem; display: block; margin-top: 5px;">
-                    Le score représente le total de points gagnés par le joueur
+                    ✏️ Le score représente le total de points gagnés (modifiable manuellement)
                 </small>
             </div>
             
