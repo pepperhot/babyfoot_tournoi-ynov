@@ -1,65 +1,103 @@
-
 <div class="container">
-    <h2>Gestion des Tournois</h2>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <h2>🏆 Gestion des Tournois</h2>
+        <a href="index.php" class="btn-secondary" style="text-decoration: none; padding: 10px 20px; border-radius: 8px; background: linear-gradient(135deg, #95a5a6, #7f8c8d); color: white;">← Retour au Dashboard</a>
+    </div>
 
     <?php if (!empty($message)): ?>
-        <p class="success-message"><?= htmlspecialchars($message) ?></p>
+        <div class="alert alert-success" style="margin-bottom: 25px;">
+            <strong>✅</strong> <?= htmlspecialchars($message) ?>
+        </div>
     <?php endif; ?>
 
-    <div class="form-card">
-        <h3>Créer un Nouveau Tournoi</h3>
-        <form method="POST" action="">
-            <div class="form-group">
-                <label for="tournament_name">Nom du Tournoi</label>
-                <input type="text" id="tournament_name" name="tournament_name" required>
+    <div class="card" style="margin-bottom: 30px;">
+        <h3>➕ Créer un Nouveau Tournoi</h3>
+        <form method="POST" action="" style="margin-top: 20px;">
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <div class="form-group" style="flex: 2; min-width: 250px;">
+                    <label for="tournament_name">🎯 Nom du Tournoi</label>
+                    <input type="text" id="tournament_name" name="tournament_name" required placeholder="Ex: Tournoi d'Hiver 2025">
+                </div>
+                <div class="form-group" style="flex: 1; min-width: 180px;">
+                    <label for="start_date">📅 Date de Début</label>
+                    <input type="date" id="start_date" name="start_date" value="<?= date('Y-m-d') ?>" required>
+                </div>
+                <div style="flex: 0 0 auto; display: flex; align-items: flex-end;">
+                    <button type="submit" style="white-space: nowrap; height: 52px;">✨ Créer le tournoi</button>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="start_date">Date de Début</label>
-                <input type="date" id="start_date" name="start_date" value="<?= date('Y-m-d') ?>" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Créer</button>
         </form>
     </div>
 
-    <h3>Tournois Existants</h3>
-    <table class="data-table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nom</th>
-                <th>Date de Début</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if (!empty($tournaments)): ?>
-                <?php foreach ($tournaments as $t): ?>
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3>📋 Tournois Existants</h3>
+            <span style="color: #7f8c8d; font-size: 0.9rem;">
+                Total : <strong><?= count($tournaments) ?></strong> tournoi(s)
+            </span>
+        </div>
+        
+        <div style="overflow-x: auto;">
+            <table class="data-table">
+                <thead>
                     <tr>
-                        <td><?= htmlspecialchars($t['id']) ?></td>
-                        <td><?= htmlspecialchars($t['name']) ?></td>
-                        <td><?= htmlspecialchars($t['start_date']) ?></td>
-                        <td>
-                            <form method="POST" action="" onsubmit="return confirm('Supprimer ce tournoi ?')">
-                                <input type="hidden" name="delete_id" value="<?= $t['id'] ?>">
-                                <button type="submit" class="btn btn-danger">Supprimer</button>
-                            </form>
-                        </td>
+                        <th style="width: 60px;">ID</th>
+                        <th>🎯 Nom du Tournoi</th>
+                        <th style="width: 150px;">📅 Date de Début</th>
+                        <th style="width: 120px; text-align: center;">⚙️ Actions</th>
                     </tr>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <tr>
-                    <td colspan="4">Aucun tournoi trouvé.</td>
-                </tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
+                </thead>
+                <tbody>
+                    <?php if (!empty($tournaments)): ?>
+                        <?php foreach ($tournaments as $index => $t): ?>
+                            <tr>
+                                <td style="font-weight: 600; color: #667eea;">#<?= htmlspecialchars($t['id']) ?></td>
+                                <td>
+                                    <strong><?= htmlspecialchars($t['name']) ?></strong>
+                                </td>
+                                <td><?= date('d/m/Y', strtotime($t['start_date'])) ?></td>
+                                <td style="text-align: center;">
+                                    <form method="POST" action="" style="display: inline-block;" onsubmit="return confirm('⚠️ Êtes-vous sûr de vouloir supprimer ce tournoi ?\n\nToutes les inscriptions seront également supprimées !')">
+                                        <input type="hidden" name="delete_id" value="<?= $t['id'] ?>">
+                                        <button type="submit" class="btn-delete" title="Supprimer le tournoi">🗑️ Supprimer</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="4" style="text-align: center; padding: 40px; color: #95a5a6;">
+                                📭 Aucun tournoi trouvé. Créez-en un ci-dessus !
+                            </td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 <style>
-.form-card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 25px; }
-.btn-primary { background-color: #3498db; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; }
-.btn-danger { background-color: #e74c3c; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; }
-.data-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-.data-table th, .data-table td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-.success-message { color: #2ecc71; background: #e8f8f5; border: 1px solid #2ecc71; padding: 10px; border-radius: 4px; margin-bottom: 15px; }
+.btn-delete {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+}
+
+.btn-delete:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(231, 76, 60, 0.5);
+}
+
+tbody tr:hover {
+    transform: translateX(5px);
+    background: linear-gradient(90deg, #f8f9fa 0%, #e9ecef 100%);
+}
 </style>

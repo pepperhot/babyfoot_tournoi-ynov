@@ -14,7 +14,7 @@
         	<form action="add_score.php" method="POST" style="background:#eee; padding:15px; border-radius:5px;">
 	            <div class="form-group">
         	        <label>Points gagnés</label>
-                	<input type="number" name="points" placeholder="Ex: 10" min="11" required>
+                	<input type="number" name="points" placeholder="Ex: 10" min="0" max="10" required>
 	            </div>
         	    <div class="form-group">
                 	<label>Type</label>
