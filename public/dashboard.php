@@ -8,6 +8,38 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
+// Récupérer les invitations en attente
+$pending_invitations = [];
+try {
+    $stmt_inv = $pdo->prepare("
+        SELECT mi.id, mi.message, mi.created_at,
+               COALESCE(u.pseudo, u.username) as sender_name
+        FROM match_invitations mi
+        JOIN users u ON mi.sender_id = u.id
+        WHERE mi.receiver_id = ? AND mi.status = 'pending'
+        ORDER BY mi.created_at DESC
+        LIMIT 3
+    ");
+    $stmt_inv->execute([$_SESSION['user_id']]);
+    $pending_invitations = $stmt_inv->fetchAll();
+} catch (PDOException $e) {
+    try {
+        $stmt_inv = $pdo->prepare("
+            SELECT mi.id, mi.message, mi.created_at,
+                   u.username as sender_name
+            FROM match_invitations mi
+            JOIN users u ON mi.sender_id = u.id
+            WHERE mi.receiver_id = ? AND mi.status = 'pending'
+            ORDER BY mi.created_at DESC
+            LIMIT 3
+        ");
+        $stmt_inv->execute([$_SESSION['user_id']]);
+        $pending_invitations = $stmt_inv->fetchAll();
+    } catch (PDOException $e2) {
+        $pending_invitations = [];
+    }
+}
+
 // 1. Récupérer le classement (Total des points par utilisateur)
 $sqlLeaderboard = "
     SELECT u.username, SUM(s.points) as total_points 
