@@ -44,10 +44,24 @@ try {
 
 // Traitement du formulaire
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $invitation) {
-    $my_score = intval($_POST['my_score']);
-    $opponent_score = intval($_POST['opponent_score']);
-    $my_goals = intval($_POST['my_goals'] ?? 0);
-    $opponent_goals = intval($_POST['opponent_goals'] ?? 0);
+    // Nouvelle logique : Vainqueur / Perdant
+    $winner = $_POST['winner'] ?? 'me'; // 'me' ou 'opponent'
+    $winner_score = intval($_POST['winner_score']);
+    $loser_score = intval($_POST['loser_score']);
+    
+    // Attribution des scores en fonction du vainqueur déclaré
+    if ($winner === 'me') {
+        $my_score = $winner_score;
+        $opponent_score = $loser_score;
+    } else {
+        $my_score = $loser_score;
+        $opponent_score = $winner_score;
+    }
+
+    // Simplification : Goals = Score (sauf si spécifié autrement, mais ici on simplifie)
+    $my_goals = $my_score;
+    $opponent_goals = $opponent_score;
+
     $my_gamelles = intval($_POST['my_gamelles'] ?? 0);
     $opponent_gamelles = intval($_POST['opponent_gamelles'] ?? 0);
     
