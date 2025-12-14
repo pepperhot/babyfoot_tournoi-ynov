@@ -10,12 +10,14 @@
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px;">
         <h2>👥 Liste des Participants</h2>
         <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 10px 20px; border-radius: 20px; font-weight: 600; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
-            📊 <?= $total_participants ?> Participant(s)
+            📊 <?= $total_participants-1 ?> Participant(s)
         </div>
     </div>
 
     <?php if (!empty($message)): 
-        list($type, $text) = explode('|', $message);
+        $parts = explode('|', $message);
+        $type = count($parts) > 1 ? $parts[0] : 'info';
+        $text = count($parts) > 1 ? $parts[1] : $message;
     ?>
         <div class="alert alert-<?= $type === 'success' ? 'success' : 'danger' ?>" style="margin-bottom: 25px;">
             <strong><?= $type === 'success' ? '✅' : '⚠️' ?></strong>
@@ -26,13 +28,14 @@
     <?php if (!empty($pending_invitations)): ?>
     <div class="card" style="margin-bottom: 25px; background: linear-gradient(135deg, #fff5f5, #ffe0e0); border-left: 4px solid #e74c3c;">
         <h3>📨 Invitations Reçues (<?= count($pending_invitations) ?>)</h3>
+        
         <div style="margin-top: 15px;">
             <?php foreach ($pending_invitations as $inv): ?>
             <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                 <div>
-                    <strong style="color: #667eea;">👤 <?= htmlspecialchars($inv['sender_name']) ?></strong>
-                    <p style="margin: 5px 0; color: #7f8c8d;"><?= htmlspecialchars($inv['message']) ?></p>
-                    <small style="color: #95a5a6;">⏰ <?= date('d/m/Y H:i', strtotime($inv['created_at'])) ?></small>
+                    <strong style="color: #667eea;">👤 <?= htmlspecialchars($inv['sender_name'] ?? 'Inconnu') ?></strong>
+                    <p style="margin: 5px 0; color: #7f8c8d;"><?= htmlspecialchars($inv['message'] ?? '') ?></p>
+                    <small style="color: #95a5a6;">⏰ <?= isset($inv['created_at']) ? date('d/m/Y H:i', strtotime($inv['created_at'])) : '--/--' ?></small>
                 </div>
                 <div style="display: flex; gap: 10px;">
                     <form method="POST" style="display: inline;">
@@ -116,7 +119,8 @@
             Envoyez une invitation à <strong id="playerName"></strong>
         </p>
         
-        <form method="POST" id="inviteForm">
+        <!-- Ajout de l'action explicite pour être sûr du chemin d'envoi -->
+        <form method="POST" action="<?= htmlspecialchars($_SERVER['REQUEST_URI']) ?>" id="inviteForm">
             <input type="hidden" name="action" value="invite">
             <input type="hidden" name="receiver_id" id="receiver_id">
             <input type="hidden" name="receiver_name" id="receiver_name">
@@ -143,13 +147,6 @@
     </div>
 </div>
 
-<style>
-.player-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-}
-
-.btn-invite:hover:not(:disabled) {
 <style>
 .player-card:hover {
     transform: translateY(-5px);
@@ -206,18 +203,6 @@ window.onclick = function(event) {
         closeInviteModal();
     }
 }
-
-// Animation de disparition des messages de succès
-<?php if (!empty($message) && strpos($message, 'success') === 0): ?>
-setTimeout(function() {
-    const alert = document.querySelector('.alert-success');
-    if (alert) {
-        alert.style.transition = 'opacity 0.5s ease';
-        alert.style.opacity = '0';
-        setTimeout(() => alert.remove(), 500);
-    }
-}, 5000);
-<?php endif; ?>
 </script>
 </body>
 </html>

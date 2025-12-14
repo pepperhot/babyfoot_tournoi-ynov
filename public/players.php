@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             
             if ($response === 'accepted') {
                 // Rediriger vers la page de résultats du match
-                header("Location: match_result.php?id=" . $invitation_id);
+                header("Location: /match_result.php?id=" . $invitation_id);
                 exit;
             } else {
                 $message = "success|Invitation déclinée.";
