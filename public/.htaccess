@@ -1,5 +1,10 @@
+Options +FollowSymLinks
 RewriteEngine On
 RewriteBase /
+
+# Active l'affichage des erreurs pour voir les notifications/bugs cachés
+php_flag display_errors on
+php_value error_reporting E_ALL
 
 ErrorDocument 403 /public/register.php
 ErrorDocument 404 /404.php
@@ -9,6 +14,11 @@ RewriteRule ^config/ - [F,L]
 RewriteRule ^templates/ - [F,L]
 
 RewriteRule ^sql/ - [F,L]
+
+# Redirige tout vers index.php si le fichier/dossier n'existe pas (Routage)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
 
 Options -Indexes
 

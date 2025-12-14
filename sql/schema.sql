@@ -39,7 +39,9 @@ CREATE TABLE IF NOT EXISTS scores (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     points INT NOT NULL, -- Ex: 10 pour une victoire, 3 pour un nul
-    match_type ENUM('entrainement', 'tournoi') DEFAULT 'entrainement',
+    match_type ENUM('entrainement', 'tournoi', 'match') DEFAULT 'entrainement',
+    goals INT DEFAULT 0, -- Nombre de buts marqués
+    gamelles INT DEFAULT 0, -- Nombre de gamelles (10-0)
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );

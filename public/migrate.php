@@ -5,7 +5,7 @@
  * Et crée la table des invitations
  */
 
-require_once 'config/db.php';
+require_once '../config/db.php';
 
 echo "<h2>Migration de la base de données</h2>";
 
@@ -83,7 +83,7 @@ try {
             sender_id INT NOT NULL,
             receiver_id INT NOT NULL,
             message TEXT,
-            status ENUM('pending', 'accepted', 'declined') DEFAULT 'pending',
+            status ENUM('pending', 'accepted', 'declined', 'completed') DEFAULT 'pending',
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             FOREIGN KEY (sender_id) REFERENCES users(id) ON DELETE CASCADE,
@@ -146,15 +146,64 @@ try {
     }
 }
 
+try {
+    // 9. Ajouter les colonnes goals et gamelles à scores
+    echo "<p>Vérification de la colonne 'goals' dans scores...</p>";
+    $pdo->exec("ALTER TABLE scores ADD COLUMN goals INT DEFAULT 0 AFTER match_type");
+    echo "<p style='color: green;'>✓ Colonne 'goals' ajoutée</p>";
+} catch (PDOException $e) {
+    if (strpos($e->getMessage(), 'Duplicate column') !== false) {
+        echo "<p style='color: orange;'>ℹ Colonne 'goals' existe déjà</p>";
+    } else {
+        echo "<p style='color: red;'>✗ Erreur: " . $e->getMessage() . "</p>";
+    }
+}
+
+try {
+    echo "<p>Vérification de la colonne 'gamelles' dans scores...</p>";
+    $pdo->exec("ALTER TABLE scores ADD COLUMN gamelles INT DEFAULT 0 AFTER goals");
+    echo "<p style='color: green;'>✓ Colonne 'gamelles' ajoutée</p>";
+} catch (PDOException $e) {
+    if (strpos($e->getMessage(), 'Duplicate column') !== false) {
+        echo "<p style='color: orange;'>ℹ Colonne 'gamelles' existe déjà</p>";
+    } else {
+        echo "<p style='color: red;'>✗ Erreur: " . $e->getMessage() . "</p>";
+    }
+}
+
+try {
+    echo "<p>Modification du type 'match_type' pour inclure 'match'...</p>";
+    $pdo->exec("ALTER TABLE scores MODIFY COLUMN match_type ENUM('entrainement', 'tournoi', 'match') DEFAULT 'entrainement'");
+    echo "<p style='color: green;'>✓ Type 'match_type' modifié</p>";
+} catch (PDOException $e) {
+    echo "<p style='color: red;'>✗ Erreur: " . $e->getMessage() . "</p>";
+}
+
 echo "<hr>";
 echo "<h3 style='color: green;'>✓ Migration terminée !</h3>";
-echo "<p><a href='public/dashboard.php'>→ Retour au dashboard</a></p>";
-echo "<p><a href='public/players.php' style='color: #2ecc71; font-weight: bold;'>→ Voir les joueurs en ligne (NOUVEAU !)</a></p>";
-echo "<p><a href='public/admin/users.php'>→ Gestion des utilisateurs (Admin)</a></p>";
+echo "<p><a href='dashboard.php'>→ Retour au dashboard</a></p>";
+echo "<p><a href='players.php' style='color: #667eea; font-weight: bold;'>→ Voir les participants (NOUVEAU !)</a></p>";
+echo "<p><a href='admin/users.php'>→ Gestion des utilisateurs (Admin)</a></p>";
 
 // Vérifier la structure finale
 echo "<hr><h3>Structure de la table users :</h3>";
 $stmt = $pdo->query("DESCRIBE users");
+$columns = $stmt->fetchAll(PDO::FETCH_ASSOC);
+echo "<table border='1' cellpadding='5'>";
+echo "<tr><th>Colonne</th><th>Type</th><th>Null</th><th>Clé</th><th>Défaut</th></tr>";
+foreach ($columns as $col) {
+    echo "<tr>";
+    echo "<td>" . htmlspecialchars($col['Field']) . "</td>";
+    echo "<td>" . htmlspecialchars($col['Type']) . "</td>";
+    echo "<td>" . htmlspecialchars($col['Null']) . "</td>";
+    echo "<td>" . htmlspecialchars($col['Key']) . "</td>";
+    echo "<td>" . htmlspecialchars($col['Default'] ?? 'NULL') . "</td>";
+    echo "</tr>";
+}
+echo "</table>";
+
+echo "<hr><h3>Structure de la table scores :</h3>";
+$stmt = $pdo->query("DESCRIBE scores");
 $columns = $stmt->fetchAll(PDO::FETCH_ASSOC);
 echo "<table border='1' cellpadding='5'>";
 echo "<tr><th>Colonne</th><th>Type</th><th>Null</th><th>Clé</th><th>Défaut</th></tr>";
@@ -178,4 +227,3 @@ foreach ($tables as $table) {
 }
 echo "</ul>";
 ?>
-
