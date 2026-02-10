@@ -1,6 +1,6 @@
 <div class="animate-fade-in">
     <?php if (!$invitation): ?>
-        <div class="card text-center" style="padding: 40px;">
+        <div class="card text-center">
             <h2 style="color: var(--danger); border: none;">❌ Match introuvable</h2>
             <p class="text-muted" style="margin: 20px 0;">
                 Ce match n'existe pas ou a expiré.
@@ -10,13 +10,9 @@
     <?php else: ?>
         
         <!-- Interface de Match VS -->
-        <div class="match-vs-container" style="background: linear-gradient(135deg, var(--bg-card), #F3F4F6);">
-            <div style="flex: 100%; text-align: center;">
-                <h1 style="margin-bottom: 20px; font-size: 2rem; color: var(--primary); margin-top: 0;">⚔️ DUEL EN COURS</h1>
-            </div>
-            
+        <div class="match-vs-container">
             <!-- Joueur 1 (Moi) -->
-            <div style="text-align: center;">
+            <div class="text-center">
                 <div class="player-avatar-large" style="border-color: var(--primary);">
                     👤
                 </div>
@@ -30,7 +26,7 @@
             </div>
 
             <!-- Joueur 2 (Adversaire) -->
-            <div style="text-align: center;">
+            <div class="text-center">
                 <div class="player-avatar-large" style="border-color: var(--danger);">
                     😈
                 </div>
@@ -40,10 +36,7 @@
         </div>
 
         <div class="card">
-            <h2 class="text-center" style="margin-bottom: 20px; border: none;">📝 Saisir les Scores</h2>
-            <p class="text-center text-muted" style="margin-bottom: 30px;">
-                Le match est terminé ? Entrez les résultats ci-dessous.
-            </p>
+            <h2 class="text-center" style="margin-bottom: 20px; border: none;">📝 Résultat du Match</h2>
 
             <?php if (!empty($message)): 
                 $parts = explode('|', $message);
@@ -56,24 +49,24 @@
                 </div>
             <?php endif; ?>
 
-            <form method="POST" style="margin-top: 30px;">
+            <form method="POST" style="margin-top: 2rem;">
                 
                 <!-- 1. QUI A GAGNÉ ? -->
-                <div style="margin-bottom: 40px;">
-                    <h3 class="text-center" style="margin-bottom: 20px; font-size: 1.3rem;">🏆 Qui a remporté le match ?</h3>
-                    <div class="flex-row justify-between" style="gap: 20px;">
-                        <label style="cursor: pointer; flex: 1;">
+                <div style="margin-bottom: 2rem;">
+                    <h3 class="text-center" style="margin-bottom: 1rem;">🏆 Qui a remporté le match ?</h3>
+                    <div class="dashboard-columns">
+                        <label style="cursor: pointer;">
                             <input type="radio" name="winner" value="me" checked style="display: none;" onchange="updateWinnerUI(this)">
-                            <div class="winner-card selected bg-white" id="card-me" style="border: 3px solid var(--border-color); border-radius: 15px; padding: 20px; transition: all 0.3s ease; text-align: center;">
+                            <div class="winner-card selected" id="card-me" style="text-align: center; padding: 1.5rem;">
                                 <div style="font-size: 3rem; margin-bottom: 10px;">😎</div>
                                 <div style="font-weight: bold; font-size: 1.2rem;">MOI</div>
                                 <div style="color: var(--success); font-weight: bold; margin-top: 5px;" class="result-text">VAINQUEUR</div>
                             </div>
                         </label>
 
-                        <label style="cursor: pointer; flex: 1;">
+                        <label style="cursor: pointer;">
                             <input type="radio" name="winner" value="opponent" style="display: none;" onchange="updateWinnerUI(this)">
-                            <div class="winner-card bg-white" id="card-opponent" style="border: 3px solid var(--border-color); border-radius: 15px; padding: 20px; transition: all 0.3s ease; opacity: 0.7; text-align: center;">
+                            <div class="winner-card" id="card-opponent" style="opacity: 0.7; text-align: center; padding: 1.5rem;">
                                 <div style="font-size: 3rem; margin-bottom: 10px;">😈</div>
                                 <div style="font-weight: bold; font-size: 1.2rem;"><?= htmlspecialchars($opponent['name']) ?></div>
                                 <div style="color: var(--text-muted); font-weight: bold; margin-top: 5px;" class="result-text">PERDANT</div>
@@ -83,22 +76,77 @@
                 </div>
 
                 <!-- 2. SCORES -->
-                <div class="dashboard-columns" style="margin-bottom: 30px;">
+                <div class="dashboard-columns">
                     <!-- Score Gagnant -->
-                    <div class="dashboard-col" style="background: #ECFDF5; padding: 20px; border-radius: 15px; border: 2px solid var(--success);">
+                    <div class="dashboard-col" style="background: rgba(16, 185, 129, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.2);">
                         <h3 style="color: var(--success); margin-bottom: 15px; text-align: center;">
                             🥇 Score du Vainqueur
                         </h3>
                         <div class="form-group">
                             <input type="number" name="winner_score" min="0" max="10" value="10" required 
-                                   style="font-size: 2.5rem; text-align: center; font-weight: bold; height: 70px; color: var(--success); border: 2px solid var(--success);">
+                                   class="score-input winner">
                         </div>
                     </div>
 
                     <!-- Score Perdant -->
-                    <div class="dashboard-col" style="background: #FEF2F2; padding: 20px; border-radius: 15px; border: 2px solid var(--danger);">
+                    <div class="dashboard-col" style="background: rgba(239, 68, 68, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.2);">
                         <h3 style="color: var(--danger); margin-bottom: 15px; text-align: center;">
                             🥈 Score du Perdant
+                        </h3>
+                        <div class="form-group">
+                            <input type="number" name="loser_score" min="0" max="9" value="0" required 
+                                   class="score-input loser">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center" style="margin-top: 2rem;">
+                    <button type="submit" class="btn-primary" style="width: 100%; max-width: 400px; padding: 1rem; font-size: 1.1rem;">
+                        ✅ Valider le résultat
+                    </button>
+                    <p style="margin-top: 1rem;">
+                        <a href="players.php" class="btn btn-cancel">Annuler</a>
+                    </p>
+                </div>
+
+            </form>
+        </div>
+    <?php endif; ?>
+</div>
+
+<script>
+function updateWinnerUI(radio) {
+    const cardMe = document.getElementById('card-me');
+    const cardOpponent = document.getElementById('card-opponent');
+    
+    // Reset classes
+    cardMe.classList.remove('selected');
+    cardOpponent.classList.remove('selected');
+    cardMe.style.opacity = '0.7';
+    cardOpponent.style.opacity = '0.7';
+    
+    cardMe.querySelector('.result-text').innerText = 'PERDANT';
+    cardMe.querySelector('.result-text').style.color = 'var(--text-muted)';
+    cardOpponent.querySelector('.result-text').innerText = 'PERDANT';
+    cardOpponent.querySelector('.result-text').style.color = 'var(--text-muted)';
+
+    if (radio.value === 'me') {
+        cardMe.classList.add('selected');
+        cardMe.style.opacity = '1';
+        cardMe.querySelector('.result-text').innerText = 'VAINQUEUR';
+        cardMe.querySelector('.result-text').style.color = 'var(--success)';
+        
+        cardOpponent.querySelector('.result-text').innerText = 'PERDANT';
+    } else {
+        cardOpponent.classList.add('selected');
+        cardOpponent.style.opacity = '1';
+        cardOpponent.querySelector('.result-text').innerText = 'VAINQUEUR';
+        cardOpponent.querySelector('.result-text').style.color = 'var(--success)';
+        
+        cardMe.querySelector('.result-text').innerText = 'PERDANT';
+    }
+}
+</script>                            🥈 Score du Perdant
                         </h3>
                         <div class="form-group">
                             <input type="number" name="loser_score" min="0" max="9" value="0" required 

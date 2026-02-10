@@ -1,5 +1,8 @@
-<footer style="margin-top: 50px; text-align: center; font-size: 0.8em; color: #777;">
-            &copy; 2025 Club de Babyfoot
-        </footer>
-    </div> </body>
+    </div> 
+    
+    <footer class="text-center text-muted" style="margin-top: 3rem; padding-bottom: 2rem; font-size: 0.85rem;">
+        &copy; <?= date('Y') ?> Club de Babyfoot Manager • Fait avec ❤️
+    </footer>
+
+</body>
 </html>

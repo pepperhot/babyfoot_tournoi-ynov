@@ -8,38 +8,40 @@
     <?php endif; ?>
 
     <?php if (!empty($pending_invitations)): ?>
-    <div class="card" style="border-left: 4px solid var(--danger); background-color: #FEF2F2;">
+    <div class="card" style="border-left: 4px solid var(--danger);">
         <div class="flex-between flex-wrap">
-            <h3 style="margin: 0;">📨 Invitations en Attente (<?= count($pending_invitations) ?>)</h3>
+            <h3 style="margin: 0; color: var(--danger);">📨 Invitations en Attente (<?= count($pending_invitations) ?>)</h3>
             <a href="players.php" class="btn btn-primary btn-sm">
                 Voir toutes →
             </a>
         </div>
         <div class="flex-col" style="margin-top: 15px;">
             <?php foreach ($pending_invitations as $inv): ?>
-            <div class="flex-between flex-wrap gap-sm" style="background: white; padding: 15px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
-                <div style="flex: 1;">
-                    <strong style="color: var(--primary);">👤 <?= htmlspecialchars($inv['sender_name']) ?></strong>
-                    <p style="margin: 5px 0; color: var(--text-muted);"><?= htmlspecialchars($inv['message']) ?></p>
-                    <small class="text-muted">⏰ <?= date('d/m/Y H:i', strtotime($inv['created_at'])) ?></small>
-                </div>
-                <div class="flex-row gap-sm flex-small-row">
-                    <form method="POST" action="players.php" style="display: inline;">
-                        <input type="hidden" name="action" value="respond">
-                        <input type="hidden" name="invitation_id" value="<?= $inv['id'] ?>">
-                        <input type="hidden" name="response" value="accepted">
-                        <button type="submit" class="btn-success">
-                            ✅ Accepter
-                        </button>
-                    </form>
-                    <form method="POST" action="players.php" style="display: inline;">
-                        <input type="hidden" name="action" value="respond">
-                        <input type="hidden" name="invitation_id" value="<?= $inv['id'] ?>">
-                        <input type="hidden" name="response" value="declined">
-                        <button type="submit" class="btn-danger">
-                            ❌ Refuser
-                        </button>
-                    </form>
+            <div class="card shadow-sm" style="margin-bottom: 0;">
+                <div class="flex-between flex-wrap gap-sm">
+                    <div style="flex: 1;">
+                        <strong style="color: var(--primary);">👤 <?= htmlspecialchars($inv['sender_name']) ?></strong>
+                        <p class="text-muted"><?= htmlspecialchars($inv['message']) ?></p>
+                        <small class="text-muted">⏰ <?= date('d/m/Y H:i', strtotime($inv['created_at'])) ?></small>
+                    </div>
+                    <div class="flex-row gap-sm flex-small-row">
+                        <form method="POST" action="players.php">
+                            <input type="hidden" name="action" value="respond">
+                            <input type="hidden" name="invitation_id" value="<?= $inv['id'] ?>">
+                            <input type="hidden" name="response" value="accepted">
+                            <button type="submit" class="btn-success btn-sm">
+                                ✅ Accepter
+                            </button>
+                        </form>
+                        <form method="POST" action="players.php">
+                            <input type="hidden" name="action" value="respond">
+                            <input type="hidden" name="invitation_id" value="<?= $inv['id'] ?>">
+                            <input type="hidden" name="response" value="declined">
+                            <button type="submit" class="btn-danger btn-sm">
+                                ❌ Refuser
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
             <?php endforeach; ?>
@@ -55,9 +57,9 @@
                     <li class="text-muted" style="padding: 10px;">Aucun score enregistré</li>
                 <?php else: ?>
                     <?php foreach($history as $h): ?>
-                        <li style="padding: 10px; border-bottom: 1px solid var(--border-color);">
-                            <span class="badge warning" style="margin-right: 10px; background: var(--secondary); color: white;"><?= $h['points'] ?> pts</span>
-                            <span class="text-muted">(<?= $h['match_type'] ?>) - <?= date('d/m H:i', strtotime($h['created_at'])) ?></span>
+                        <li class="flex-between" style="padding: 10px; border-bottom: 1px solid var(--border-color);">
+                            <span class="badge warning"><?= $h['points'] ?> pts</span>
+                            <span class="text-muted"><?= $h['match_type'] ?> - <?= date('d/m H:i', strtotime($h['created_at'])) ?></span>
                         </li>
                     <?php endforeach; ?>
                 <?php endif; ?>

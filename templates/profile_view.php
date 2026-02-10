@@ -1,5 +1,7 @@
 <div class="animate-fade-in">
-    <h2>👤 Mon Profil</h2>
+    <div class="flex-between align-center" style="margin-bottom: 2rem;">
+        <h2>👤 Mon Profil</h2>
+    </div>
     
     <?php if (!empty($message)): 
         $parts = explode('|', $message);
@@ -13,48 +15,41 @@
     <?php endif; ?>
 
     <div class="dashboard-columns">
+        <!-- Statistiques et Classement -->
         <div class="card dashboard-col">
             <h3>📊 Mes Statistiques</h3>
             <div class="flex-col">
-                <div class="flex-between" style="padding: 15px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 10px; color: white;">
-                    <span style="font-size: 0.9rem;">🏆 Points Totaux</span>
-                    <strong style="font-size: 1.3rem;"><?= $stats['total_points'] ?? 0 ?></strong>
+                <div class="flex-between align-center" style="padding: 1rem; background-color: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: var(--radius-md);">
+                    <span style="color: var(--primary); font-weight: 500;">🏆 Points Totaux</span>
+                    <strong style="font-size: 1.5rem; color: var(--text-main);"><?= $stats['total_points'] ?? 0 ?></strong>
                 </div>
-                <div class="flex-between" style="padding: 15px; background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%); border-radius: 10px; color: white;">
-                    <span style="font-size: 0.9rem;">🎮 Matchs Joués</span>
-                    <strong style="font-size: 1.3rem;"><?= $stats['total_matches'] ?? 0 ?></strong>
+                <div class="flex-between align-center" style="padding: 1rem; background-color: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); border-radius: var(--radius-md);">
+                    <span style="color: var(--warning); font-weight: 500;">🎮 Matchs Joués</span>
+                    <strong style="font-size: 1.5rem; color: var(--text-main);"><?= $stats['total_matches'] ?? 0 ?></strong>
                 </div>
-                <div class="flex-between" style="padding: 15px; background: linear-gradient(135deg, var(--success) 0%, #059669 100%); border-radius: 10px; color: white;">
-                    <span style="font-size: 0.9rem;">📅 Membre depuis</span>
-                    <strong style="font-size: 1.1rem;"><?= date('d/m/Y', strtotime($user['created_at'])) ?></strong>
+                <div class="flex-between align-center" style="padding: 1rem; background-color: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: var(--radius-md);">
+                    <span style="color: var(--success); font-weight: 500;">📅 Membre depuis</span>
+                    <strong style="font-size: 1.1rem; color: var(--text-main);"><?= date('d/m/Y', strtotime($user['created_at'])) ?></strong>
                 </div>
                 
                 <?php if ($userRank): ?>
-                <div class="flex-between" style="padding: 15px; background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%); border-radius: 10px; color: white; position: relative; overflow: hidden;">
-                    <?php if ($userRank['ranking'] == 1): ?>
-                        <div style="position: absolute; top: -10px; right: -10px; font-size: 4rem; opacity: 0.2;">👑</div>
-                    <?php endif; ?>
-                    <span style="font-size: 0.9rem;">📈 Classement</span>
-                    <strong style="font-size: 1.3rem; position: relative; z-index: 1;">
+                <div class="flex-between align-center" style="padding: 1rem; background: linear-gradient(135deg, var(--primary), #4f46e5); border-radius: var(--radius-md); color: white; margin-top: 1rem;">
+                    <span style="font-weight: 500;">📈 Classement</span>
+                    <strong style="font-size: 1.5rem;">
                         #<?= $userRank['ranking'] ?> / <?= $totalPlayers ?>
-                        <?php if ($userRank['ranking'] == 1): ?>
-                            👑
-                        <?php elseif ($userRank['ranking'] == 2): ?>
-                            🥈
-                        <?php elseif ($userRank['ranking'] == 3): ?>
-                            🥉
-                        <?php endif; ?>
+                        <?php if ($userRank['ranking'] == 1): ?>👑<?php endif; ?>
                     </strong>
                 </div>
                 <?php else: ?>
-                <div class="flex-center" style="padding: 15px; background: var(--text-muted); border-radius: 10px; color: white;">
-                    <span style="font-size: 0.9rem;">🎯 Jouez des matchs pour être classé !</span>
+                <div class="text-center text-muted" style="padding: 1rem;">
+                    Non classé
                 </div>
                 <?php endif; ?>
             </div>
         </div>
 
-        <div class="card dashboard-col" style="flex: 2;">
+        <!-- Formulaire de modification -->
+        <div class="card dashboard-col">
             <h3>✏️ Modifier mes informations</h3>
             
             <form method="POST">
@@ -68,27 +63,27 @@
                     <input type="email" id="email" name="email" value="<?= htmlspecialchars($user['email']) ?>" required>
                 </div>
 
-                <hr style="margin: 30px 0; border: none; border-top: 1px solid var(--border-color);">
+                <div style="margin: 2rem 0; height: 1px; background-color: var(--border-color);"></div>
 
-                <h4 style="color: var(--primary); margin-bottom: 20px;">🔒 Changer le mot de passe (optionnel)</h4>
+                <h4 style="color: var(--secondary); margin-bottom: 1.5rem;">🔒 Sécurité</h4>
                 
                 <div class="form-group">
-                    <label for="current_password">🔑 Mot de passe actuel</label>
-                    <input type="password" id="current_password" name="current_password" placeholder="Laissez vide pour ne pas changer">
+                    <label for="current_password">Clé actuelle</label>
+                    <input type="password" id="current_password" name="current_password" placeholder="••••••">
                 </div>
                 
                 <div class="form-group">
-                    <label for="new_password">🆕 Nouveau mot de passe</label>
+                    <label for="new_password">Nouvelle clé</label>
                     <input type="password" id="new_password" name="new_password" placeholder="Minimum 6 caractères" minlength="6">
                 </div>
                 
                 <div class="form-group">
-                    <label for="confirm_password">✅ Confirmer le nouveau mot de passe</label>
-                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Retapez le nouveau mot de passe">
+                    <label for="confirm_password">Confirmation</label>
+                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Retapez la nouvelle clé">
                 </div>
                 
-                <div class="text-right">
-                    <button type="submit" class="btn-primary">💾 Enregistrer les modifications</button>
+                <div class="text-right" style="margin-top: 2rem;">
+                    <button type="submit" class="btn-primary">💾 Sauvegarder</button>
                 </div>
             </form>
         </div>
