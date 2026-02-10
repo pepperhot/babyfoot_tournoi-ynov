@@ -62,8 +62,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $invitation) {
     $my_goals = $my_score;
     $opponent_goals = $opponent_score;
 
-    $my_gamelles = intval($_POST['my_gamelles'] ?? 0);
-    $opponent_gamelles = intval($_POST['opponent_gamelles'] ?? 0);
+    $winner_gamelles = intval($_POST['winner_gamelles'] ?? 0);
+    $loser_gamelles = intval($_POST['loser_gamelles'] ?? 0);
+
+    if ($winner === 'me') {
+        $my_gamelles = $winner_gamelles;
+        $opponent_gamelles = $loser_gamelles;
+    } else {
+        $my_gamelles = $loser_gamelles;
+        $opponent_gamelles = $winner_gamelles;
+    }
     
     try {
         $pdo->beginTransaction();
