@@ -4,9 +4,7 @@ RewriteBase /
 
 # Active l'affichage des erreurs pour voir les notifications/bugs cachés
 php_flag display_errors on
-php_flag display_startup_errors on
-php_flag html_errors on
-php_value error_reporting -1
+php_value error_reporting E_ALL
 
 ErrorDocument 403 /public/register.php
 ErrorDocument 404 /404.php

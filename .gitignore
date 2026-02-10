@@ -1,0 +1,19 @@
+# Configurations sensibles
+/config/db.php
+
+# Bases de données et exports
+*.sql
+sql/*.sql
+schema.sql
+
+# PhpMyAdmin symlink
+/public/phpmyadmin/
+
+# Logs et fichiers temporaires
+*.log
+*.tmp
+*.swp
+*.bak
+
+# Environnement local
+.env
