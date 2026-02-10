@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Babyfoot App</title>
-    <!-- Utilisation de chemin relatif pour supporter les sours-dossiers localhost -->
-    <link rel="stylesheet" href="css/style.css">
+    <title><?= isset($page_title) ? $page_title . ' - ' : '' ?>Babyfoot Manager</title>
+    <!-- Utilisation de variables pour le chemin CSS -->
+    <link rel="stylesheet" href="<?= isset($css_path) ? $css_path : 'css/style.css' ?>">
 </head>
 <body>
     
@@ -13,12 +13,16 @@
         <div class="container flex-between align-center">
             <div class="nav-brand">⚽ Babyfoot Manager</div>
             <div class="nav-links">
-                <a href="dashboard.php" class="<?= basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : '' ?>">🏠 Accueil</a>
-                <a href="players.php" class="<?= basename($_SERVER['PHP_SELF']) == 'players.php' ? 'active' : '' ?>">👥 Joueurs</a>
-                <a href="tournament.php" class="<?= basename($_SERVER['PHP_SELF']) == 'tournament.php' ? 'active' : '' ?>">🏆 Tournois</a>
-                <a href="profile.php" class="<?= basename($_SERVER['PHP_SELF']) == 'profile.php' ? 'active' : '' ?>">👤 Profil</a>
+                <?php $root = (isset($css_path) && strpos($css_path, '..') !== false) ? '../' : ''; ?>
+                <a href="<?= $root ?>dashboard.php" class="<?= basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : '' ?>">🏠 Accueil</a>
+                <a href="<?= $root ?>players.php" class="<?= basename($_SERVER['PHP_SELF']) == 'players.php' ? 'active' : '' ?>">👥 Joueurs</a>
+                <a href="<?= $root ?>tournament.php" class="<?= basename($_SERVER['PHP_SELF']) == 'tournament.php' ? 'active' : '' ?>">🏆 Tournois</a>
+                <a href="<?= $root ?>profile.php" class="<?= basename($_SERVER['PHP_SELF']) == 'profile.php' ? 'active' : '' ?>">👤 Profil</a>
+                <?php if (isset($_SESSION['user_id']) && isset($_SESSION['is_admin']) && $_SESSION['is_admin']): ?>
+                    <a href="<?= $root ?>admin/index.php" class="<?= strpos($_SERVER['PHP_SELF'], 'admin') !== false ? 'active' : '' ?>">🔧 Admin</a>
+                <?php endif; ?>
             </div>
-            <a href="logout.php" class="btn-logout">Déconnexion</a>
+            <a href="<?= $root ?>logout.php" class="btn-logout">Déconnexion</a>
         </div>
     </nav>
 

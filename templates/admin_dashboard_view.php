@@ -1,53 +1,29 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>admin dashboard Babyfoot</title>
 
-    <!-- CHEMIN CORRECT -->
-    <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-
-<div class="container">
-    <h2>Gestion des Tournois</h2>
-
-    <!-- CHEMIN CORRECT -->
-    <p><a href="/admin/index.php">← Retour au Dashboard Admin</a></p>
-
-    <?php if ($message): ?>
-        <p class="success-message"><?= htmlspecialchars($message) ?></p>
-    <?php endif; ?>
-
-    <div class="form-card">
-        <h3>Créer un Nouveau Tournoi</h3>
-
-        <!-- CHEMIN CORRECT -->
-        <form method="POST" action="/admin/tournaments.php">
-            <div class="form-group">
-                <label for="tournament_name">Nom du Tournoi</label>
-                <input type="text" id="tournament_name" name="tournament_name" required>
-            </div>
-            <div class="form-group">
-                <label for="start_date">Date de Début</label>
-                <input type="date" id="start_date" name="start_date" value="<?= date('Y-m-d') ?>" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Créer</button>
-        </form>
+<div class="animate-fade-in">
+    <div class="flex-between align-center" style="margin-bottom: 2rem;">
+        <h2>🛠️ Panneau d'Administration</h2>
     </div>
 
-    <h3>Tournois Existants</h3>
-    <table class="data-table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nom</th>
-                <th>Date de Début</th>
-                <th>Statut</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
+    <div class="alert alert-success">
+        <strong>👋 Bonjour Admin !</strong> Sélectionnez une section ci-dessous pour gérer l'application.
+    </div>
+
+    <div class="dashboard-columns">
+        <!-- Card Gestion Utilisateurs -->
+        <a href="users.php" class="card dashboard-col" style="text-decoration: none; display: flex; flex-direction: column; align-items: center; text-align: center; transition: transform 0.2s;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">👥</div>
+            <h3 style="border: none; margin-bottom: 0.5rem;">Utilisateurs</h3>
+            <p class="text-muted">Gérer les comptes, modifier les pseudos et voir les statistiques.</p>
+        </a>
+
+        <!-- Card Gestion Tournois -->
+        <a href="tournaments.php" class="card dashboard-col" style="text-decoration: none; display: flex; flex-direction: column; align-items: center; text-align: center; transition: transform 0.2s;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🏆</div>
+            <h3 style="border: none; margin-bottom: 0.5rem;">Tournois</h3>
+            <p class="text-muted">Créer, modifier et supprimer les tournois officiels.</p>
+        </a>
+    </div>
+</div>
             <?php foreach ($tournaments as $t): ?>
             <tr>
                 <td><?= htmlspecialchars($t['id']) ?></td>

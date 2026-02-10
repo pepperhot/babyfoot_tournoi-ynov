@@ -1,54 +1,70 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion des Utilisateurs - Babyfoot</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-<div class="container">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+<div class="animate-fade-in">
+    <div class="flex-between align-center" style="margin-bottom: 2rem;">
         <h2>👥 Gestion des Utilisateurs</h2>
-        <a href="index.php" class="btn-secondary" style="text-decoration: none; padding: 10px 20px; border-radius: 8px; background: linear-gradient(135deg, #95a5a6, #7f8c8d); color: white;">← Retour au Dashboard</a>
+        <a href="index.php" class="btn btn-cancel">← Retour Dashboard</a>
     </div>
 
     <?php if (isset($message)): ?>
-        <div class="alert alert-<?= $message['type'] ?>" style="margin-bottom: 25px;">
+        <div class="alert alert-<?= $message['type'] === 'success' ? 'success' : 'danger' ?>">
             <strong><?= $message['type'] === 'success' ? '✅' : '⚠️' ?></strong>
             <?= htmlspecialchars($message['text']) ?>
         </div>
     <?php endif; ?>
 
-    <div class="info alert-info" style="margin-bottom: 25px;">
-        <strong>ℹ️ Panneau d'administration :</strong> Vous pouvez modifier les <strong>emails</strong>, <strong>pseudos</strong> et <strong>scores</strong> de tous les utilisateurs. Cliquez sur "✏️ Modifier" pour éditer un profil.
-    </div>
-
     <div class="card">
-        <div style="margin-bottom: 20px;">
-            <p style="color: #7f8c8d; font-size: 0.95rem;">
+        <div class="flex-between flex-wrap align-center" style="margin-bottom: 1.5rem;">
+            <p class="text-muted">
                 📊 Total : <strong><?= count($users) ?></strong> utilisateur(s) · 
-                🛡️ Admins : <strong><?= count(array_filter($users, fn($u) => $u['is_admin'])) ?></strong> · 
-                🎮 Joueurs : <strong><?= count(array_filter($users, fn($u) => !$u['is_admin'])) ?></strong>
+                🛡️ Admins : <strong><?= count(array_filter($users, fn($u) => $u['is_admin'])) ?></strong>
             </p>
         </div>
 
-        <div style="overflow-x: auto;">
-            <table class="data-table">
+        <div class="table-responsive">
+            <table>
                 <thead>
                     <tr>
                         <th style="width: 50px;">ID</th>
                         <th>📧 Email</th>
                         <th>👤 Pseudo</th>
-                        <th style="text-align: center;">🏆 Score</th>
+                        <th class="text-center">Score</th>
                         <th>📅 Inscrit le</th>
-                        <th style="text-align: center;">🔒 Statut</th>
-                        <th style="text-align: center; width: 200px;">⚙️ Actions</th>
+                        <th class="text-center">Statut</th>
+                        <th class="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (empty($users)): ?>
+                        <tr><td colspan="7" class="text-center text-muted">Aucun utilisateur trouvé.</td></tr>
+                    <?php else: ?>
+                        <?php foreach ($users as $u): ?>
                         <tr>
+                            <td>#<?= $u['id'] ?></td>
+                            <td><?= htmlspecialchars($u['email']) ?></td>
+                            <td><strong><?= htmlspecialchars($u['username']) ?></strong></td>
+                            <td class="text-center">
+                                <span class="badge warning"><?= $u['total_points'] ?> pts</span>
+                            </td>
+                            <td><?= date('d/m/Y', strtotime($u['created_at'])) ?></td>
+                            <td class="text-center">
+                                <?php if ($u['is_admin']): ?>
+                                    <span class="badge" style="background: var(--primary); color: white;">ADMIN</span>
+                                <?php else: ?>
+                                    <span class="badge" style="background: var(--bg-input); color: var(--text-muted);">Joueur</span>
+                                <?php endif; ?>
+                            </td>
+                            <td class="text-center">
+                                <a href="users.php?edit_id=<?= $u['id'] ?>" class="btn btn-primary btn-sm">
+                                    ✏️ Modifier
+                                </a>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>                        <tr>
                             <td colspan="7" style="text-align: center; padding: 40px; color: #95a5a6;">
                                 Aucun utilisateur trouvé
                             </td>

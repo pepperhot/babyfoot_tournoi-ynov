@@ -52,6 +52,10 @@ $stmt = $pdo->prepare('SELECT * FROM tournaments WHERE start_date >= CURDATE() O
 $stmt->execute();
 $tournaments = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+// Configuration de la page
+$page_title = "Gestion des Tournois";
+$css_path = '../css/style.css';
+
 // Inclusion templates
 require_once '../../templates/header.php';
 require_once '../../templates/admin_tournaments_view.php';
