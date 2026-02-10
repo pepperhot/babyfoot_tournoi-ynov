@@ -2,14 +2,27 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Babyfoot App</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <!-- Utilisation de chemin relatif pour supporter les sours-dossiers localhost -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="container">
-<nav>
-    <a href="/dashboard.php">🏠 Accueil & Scores</a>
-    <a href="/tournament.php">🏆 Tournois</a>
+    
+    <nav class="nav-admin">
+        <div class="container flex-between align-center">
+            <div class="nav-brand">⚽ Babyfoot Manager</div>
+            <div class="nav-links">
+                <a href="dashboard.php" class="<?= basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : '' ?>">🏠 Accueil</a>
+                <a href="players.php" class="<?= basename($_SERVER['PHP_SELF']) == 'players.php' ? 'active' : '' ?>">👥 Joueurs</a>
+                <a href="tournament.php" class="<?= basename($_SERVER['PHP_SELF']) == 'tournament.php' ? 'active' : '' ?>">🏆 Tournois</a>
+                <a href="profile.php" class="<?= basename($_SERVER['PHP_SELF']) == 'profile.php' ? 'active' : '' ?>">👤 Profil</a>
+            </div>
+            <a href="logout.php" class="btn-logout">Déconnexion</a>
+        </div>
+    </nav>
+
+    <div class="container main-content">
     <?php 
     // Compter le nombre total de participants
     $total_users = 0;
