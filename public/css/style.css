@@ -322,38 +322,93 @@ tr:last-child td { border-bottom: none; }
 .alert-success { background-color: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
 .alert-danger { background-color: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); }
 
+/* ================= GRID SYSTEM ================= */
+.grid-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+/* ================= MOBILE BOTTOM NAV ================= */
+.bottom-nav {
+    display: none;
+}
+
 /* ================= MOBILE OPTIMIZATIONS ================= */
 @media (max-width: 768px) {
     .container {
         padding: 0 1rem;
     }
 
-    /* Navigation Mobile : scrollable et sticky */
+    /* Navigation Mobile : Top Bar simplified */
     .nav-admin .container {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.5rem;
+        /* On garde le logo et le logout en haut */
+        flex-direction: row;
+        justify-content: space-between;
     }
     
     .nav-brand {
-        text-align: center;
-        margin-bottom: 0.25rem;
+        font-size: 1.1rem; /* Plus petit */
     }
 
+    /* Cache les anciens liens en haut */
     .nav-links {
-        justify-content: center;
-        flex-wrap: wrap; /* Sur mobile on wrap si ça déborde */
+        display: none; 
     }
 
-    .btn-logout {
-        display: block;
-        text-align: center;
-        margin-top: 0.5rem;
+    /* Affiche la Bottom Navigation */
+    .bottom-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: var(--bg-card);
+        border-top: 1px solid var(--border-color);
+        padding: 0.5rem 0;
+        justify-content: space-around;
+        align-items: center;
+        z-index: 1000;
+        box-shadow: 0 -4px 15px rgba(0,0,0,0.4); /* Ombre plus marquée */
+        padding-bottom: env(safe-area-inset-bottom); /* Support iPhone X+ */
+    }
+    
+    .bottom-nav a {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-muted);
+        font-size: 0.65rem; /* Petit texte */
+        padding: 0.5rem 0;
+        border-radius: 0; 
+        transition: color 0.3s;
+    }
+    
+    .bottom-nav a.active {
+        color: var(--primary);
+        font-weight: 700;
+    }
+    
+    .bottom-nav a .nav-icon {
+        font-size: 1.5rem;
+        margin-bottom: 4px;
+        transition: transform 0.2s;
+    }
+    
+    .bottom-nav a.active .nav-icon {
+        transform: translateY(-2px);
+    }
+
+    /* Espace pour éviter que le contenu soit caché par la nav bas */
+    body {
+        padding-bottom: 90px; 
     }
 
     /* Dashboard Grid -> Stack */
-    .dashboard-columns {
-        grid-template-columns: 1fr;
+    .dashboard-columns, .grid-cards {
+        grid-template-columns: 1fr; /* 1 seule colonne */
     }
 
     /* Forms text large pour éviter zoom auto iOS */
@@ -365,9 +420,10 @@ tr:last-child td { border-bottom: none; }
     .btn, button {
         width: 100%;
         margin-bottom: 0.5rem;
+        min-height: 44px; /* Touch target size */
     }
     
-    /* Petits boutons dans les listes */
+    /* Petits boutons dans les listes : exception */
     .btn-sm {
         width: auto;
         display: inline-flex;
@@ -382,6 +438,59 @@ tr:last-child td { border-bottom: none; }
     
     .flex-small-row .btn {
         flex: 1;
+    }
+    
+    /* --- TABLE REFALOW (Mode Carte) --- */
+    table, thead, tbody, th, td, tr { 
+        display: block; 
+    }
+    
+    /* Cacher le header du tableau */
+    thead tr { 
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+    
+    tr { 
+        margin-bottom: 1rem; 
+        background: var(--bg-card); 
+        padding: 1.25rem; 
+        border-radius: var(--radius-md); 
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-sm);
+    }
+    
+    td { 
+        border: none; 
+        position: relative; 
+        padding-left: 0; 
+        padding-right: 0; 
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: right;
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px dashed var(--border-color);
+        min-height: 40px; /* Touch friendly */
+    }
+    
+    td:last-child { 
+        border-bottom: none; 
+        padding-bottom: 0;
+        margin-top: 0.5rem;
+        justify-content: flex-end; /* Actions à droite */
+    }
+    
+    /* Label généré via CSS content */
+    td:before { 
+        content: attr(data-label); 
+        font-weight: 600; 
+        color: var(--text-muted);
+        text-align: left;
+        margin-right: 1rem;
+        flex: 1; /* Prend l'espace gauche */
     }
 }
 

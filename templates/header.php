@@ -26,6 +26,32 @@
         </div>
     </nav>
 
+    <!-- Bottom Navigation pour Mobile -->
+    <nav class="bottom-nav">
+        <a href="<?= $root ?>dashboard.php" class="<?= basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : '' ?>">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">Accueil</span>
+        </a>
+        <a href="<?= $root ?>players.php" class="<?= basename($_SERVER['PHP_SELF']) == 'players.php' ? 'active' : '' ?>">
+            <span class="nav-icon">👥</span>
+            <span class="nav-label">Joueurs</span>
+        </a>
+        <a href="<?= $root ?>tournament.php" class="<?= basename($_SERVER['PHP_SELF']) == 'tournament.php' ? 'active' : '' ?>">
+            <span class="nav-icon">🏆</span>
+            <span class="nav-label">Tournois</span>
+        </a>
+        <a href="<?= $root ?>profile.php" class="<?= basename($_SERVER['PHP_SELF']) == 'profile.php' ? 'active' : '' ?>">
+            <span class="nav-icon">👤</span>
+            <span class="nav-label">Profil</span>
+        </a>
+        <?php if (isset($_SESSION['user_id']) && isset($_SESSION['is_admin']) && $_SESSION['is_admin']): ?>
+            <a href="<?= $root ?>admin/index.php" class="<?= strpos($_SERVER['PHP_SELF'], 'admin') !== false ? 'active' : '' ?>">
+                <span class="nav-icon">🔧</span>
+                <span class="nav-label">Admin</span>
+            </a>
+        <?php endif; ?>
+    </nav>
+
     <div class="container main-content">
     <?php 
     // Compter le nombre total de participants

@@ -38,21 +38,21 @@
                     <?php else: ?>
                         <?php foreach ($users as $u): ?>
                         <tr>
-                            <td>#<?= $u['id'] ?></td>
-                            <td><?= htmlspecialchars($u['email']) ?></td>
-                            <td><strong><?= htmlspecialchars($u['username']) ?></strong></td>
-                            <td class="text-center">
+                            <td data-label="ID">#<?= $u['id'] ?></td>
+                            <td data-label="Email"><?= htmlspecialchars($u['email']) ?></td>
+                            <td data-label="Pseudo"><strong><?= htmlspecialchars($u['username']) ?></strong></td>
+                            <td data-label="Score" class="text-center">
                                 <span class="badge warning"><?= $u['total_points'] ?> pts</span>
                             </td>
-                            <td><?= date('d/m/Y', strtotime($u['created_at'])) ?></td>
-                            <td class="text-center">
+                            <td data-label="Inscrit le"><?= date('d/m/Y', strtotime($u['created_at'])) ?></td>
+                            <td data-label="Statut" class="text-center">
                                 <?php if ($u['is_admin']): ?>
                                     <span class="badge" style="background: var(--primary); color: white;">ADMIN</span>
                                 <?php else: ?>
                                     <span class="badge" style="background: var(--bg-input); color: var(--text-muted);">Joueur</span>
                                 <?php endif; ?>
                             </td>
-                            <td class="text-center">
+                            <td data-label="Actions" class="text-center">
                                 <a href="users.php?edit_id=<?= $u['id'] ?>" class="btn btn-primary btn-sm">
                                     ✏️ Modifier
                                 </a>

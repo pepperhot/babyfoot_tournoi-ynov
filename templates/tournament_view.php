@@ -20,14 +20,14 @@
                     <?php if (!empty($tournaments)): ?>
                         <?php foreach ($tournaments as $t): ?>
                             <tr>
-                                <td><strong><?= htmlspecialchars($t['name']) ?></strong></td>
-                                <td><?= htmlspecialchars($t['start_date']) ?></td>
-                                <td>
+                                <td data-label="Nom"><strong><?= htmlspecialchars($t['name']) ?></strong></td>
+                                <td data-label="Date"><?= htmlspecialchars($t['start_date']) ?></td>
+                                <td data-label="Inscription">
                                     <?= $t['is_registered'] 
                                         ? '<span class="status-badge status-success">Inscrit</span>' 
                                         : '<span class="status-badge status-warning">Non Inscrit</span>' ?>
                                 </td>
-                                <td>
+                                <td data-label="Action">
                                     <?php if (!$t['is_registered']): ?>
                                         <form method="POST" action="">
                                             <input type="hidden" name="tournament_id" value="<?= $t['id'] ?>">

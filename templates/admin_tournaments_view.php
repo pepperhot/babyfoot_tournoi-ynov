@@ -47,10 +47,10 @@
                     <?php if (!empty($tournaments)): ?>
                         <?php foreach ($tournaments as $index => $t): ?>
                             <tr>
-                                <td style="color: var(--primary); font-weight: bold;">#<?= htmlspecialchars($t['id']) ?></td>
-                                <td><strong><?= htmlspecialchars($t['name']) ?></strong></td>
-                                <td><?= date('d/m/Y', strtotime($t['start_date'])) ?></td>
-                                <td class="text-center">
+                                <td data-label="ID" style="color: var(--primary); font-weight: bold;">#<?= htmlspecialchars($t['id']) ?></td>
+                                <td data-label="Nom"><strong><?= htmlspecialchars($t['name']) ?></strong></td>
+                                <td data-label="Date"><?= date('d/m/Y', strtotime($t['start_date'])) ?></td>
+                                <td data-label="Actions" class="text-center">
                                     <form method="POST" action="" style="display: inline-block;" onsubmit="return confirm('⚠️ Êtes-vous sûr de vouloir supprimer ce tournoi ?\n\nToutes les inscriptions seront également supprimées !')">
                                         <input type="hidden" name="delete_id" value="<?= $t['id'] ?>">
                                         <button type="submit" class="btn-danger btn-sm" title="Supprimer le tournoi">🗑️ Supprimer</button>
