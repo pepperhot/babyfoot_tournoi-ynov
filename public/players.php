@@ -44,8 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             $stmt->execute([$response, $invitation_id, $user_id]);
             
             if ($response === 'accepted') {
-                // Rediriger vers la page de résultats du match
-                header("Location: match_result.php?id=" . $invitation_id);
+                // Rediriger vers la page de jeu
+                header("Location: game.php");
                 exit;
             } else {
                 $message = "success|Invitation déclinée.";

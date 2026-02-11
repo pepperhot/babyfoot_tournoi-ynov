@@ -79,8 +79,8 @@
                     <tbody>
                         <?php foreach($leaderboard as $rank): ?>
                         <tr>
-                            <td><?= htmlspecialchars($rank['username']) ?></td>
-                            <td><strong><?= $rank['total_points'] ?></strong></td>
+                            <td data-label="Joueur"><?= htmlspecialchars($rank['username']) ?></td>
+                            <td data-label="Points Totaux"><strong><?= $rank['total_points'] ?></strong></td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>

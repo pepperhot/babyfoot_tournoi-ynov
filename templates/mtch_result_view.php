@@ -46,17 +46,6 @@
                             <input type="number" name="my_score" min="0" max="10" required placeholder="Ex: 10" style="font-size: 1.2rem; text-align: center; font-weight: bold;">
                             <small style="color: #7f8c8d; font-size: 0.85rem;">Score entre 0 et 10</small>
                         </div>
-
-                        <div class="form-group">
-                            <label>⚽ Buts marqués</label>
-                            <input type="number" name="my_goals" min="0" value="0" placeholder="Ex: 5" style="text-align: center;">
-                        </div>
-
-                        <div class="form-group">
-                            <label>🍳 Gamelles (défaites 10-0)</label>
-                            <input type="number" name="my_gamelles" min="0" value="0" placeholder="Ex: 0" style="text-align: center;">
-                            <small style="color: #7f8c8d; font-size: 0.85rem;">Nombre de gamelles infligées à l'adversaire</small>
-                        </div>
                     </div>
 
                     <!-- Scores adversaire -->
@@ -70,17 +59,6 @@
                             <input type="number" name="opponent_score" min="0" max="10" required placeholder="Ex: 8" style="font-size: 1.2rem; text-align: center; font-weight: bold;">
                             <small style="color: #7f8c8d; font-size: 0.85rem;">Score entre 0 et 10</small>
                         </div>
-
-                        <div class="form-group">
-                            <label>⚽ Buts marqués</label>
-                            <input type="number" name="opponent_goals" min="0" value="0" placeholder="Ex: 3" style="text-align: center;">
-                        </div>
-
-                        <div class="form-group">
-                            <label>🍳 Gamelles (défaites 10-0)</label>
-                            <input type="number" name="opponent_gamelles" min="0" value="0" placeholder="Ex: 1" style="text-align: center;">
-                            <small style="color: #7f8c8d; font-size: 0.85rem;">Nombre de gamelles infligées à vous</small>
-                        </div>
                     </div>
                 </div>
 
@@ -88,8 +66,6 @@
                     <h4 style="margin: 0 0 10px 0; color: #f39c12;">📊 Règles de Scoring</h4>
                     <ul style="margin: 0; padding-left: 20px; color: #7f8c8d; font-size: 0.9rem;">
                         <li>Le score final est entre <strong>0 et 10</strong></li>
-                        <li>Une <strong>gamelle</strong> = victoire 10-0</li>
-                        <li>Comptez les <strong>buts</strong> pour les statistiques détaillées</li>
                     </ul>
                 </div>
 

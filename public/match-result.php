@@ -46,10 +46,6 @@ try {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $invitation) {
     $my_score = intval($_POST['my_score']);
     $opponent_score = intval($_POST['opponent_score']);
-    $my_goals = intval($_POST['my_goals'] ?? 0);
-    $opponent_goals = intval($_POST['opponent_goals'] ?? 0);
-    $my_gamelles = intval($_POST['my_gamelles'] ?? 0);
-    $opponent_gamelles = intval($_POST['opponent_gamelles'] ?? 0);
     
     try {
         $pdo->beginTransaction();
@@ -57,16 +53,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $invitation) {
         // Enregistrer les scores pour moi
         $stmt = $pdo->prepare("
             INSERT INTO scores (user_id, points, match_type, goals, gamelles, created_at) 
-            VALUES (?, ?, 'match', ?, ?, NOW())
+            VALUES (?, ?, 'match', 0, 0, NOW())
         ");
-        $stmt->execute([$user_id, $my_score, $my_goals, $my_gamelles]);
+        $stmt->execute([$user_id, $my_score]);
         
         // Enregistrer les scores pour l'adversaire
         $stmt = $pdo->prepare("
             INSERT INTO scores (user_id, points, match_type, goals, gamelles, created_at) 
-            VALUES (?, ?, 'match', ?, ?, NOW())
+            VALUES (?, ?, 'match', 0, 0, NOW())
         ");
-        $stmt->execute([$opponent['id'], $opponent_score, $opponent_goals, $opponent_gamelles]);
+        $stmt->execute([$opponent['id'], $opponent_score]);
         
         // Marquer l'invitation comme terminée
         $stmt = $pdo->prepare("UPDATE match_invitations SET status = 'completed', updated_at = NOW() WHERE id = ?");
